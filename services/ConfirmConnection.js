@@ -2,13 +2,11 @@
 export const confirmConnection = async () => {
 	return fetch('/api/blob-connection')
 		.then(async (res) => {
-			const data = await res.json();
-			console.log(data);
-			if (data.status !== 200) throw new Error(data.message);
+			if (res.status !== 200)
+				throw Error('Connection to external data could not be established');
 			return true;
 		})
 		.catch((err) => {
-			console.log('caught error? ');
 			throw err;
 		});
 };

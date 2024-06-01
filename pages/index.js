@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import GraphMenuButton from './menus/GraphMenuButton.js';
 import GraphSidePanel from './menus/GraphSidePanel.js';
-import { ErrorBoundary } from 'react-error-boundary';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export default function Home() {
 	const [nodeSearchInput, setNodeSearchInput] = useState('');
@@ -16,6 +16,7 @@ export default function Home() {
 	const [suggestedNodes, setSuggestedNodes] = useState([]);
 	const [focusNode, setFocusNode] = useState({});
 	const [open, setOpen] = useState(false);
+	const { showBoundary } = useErrorBoundary();
 
 	const initialContext = {
 		searchInput: nodeSearchInput,
@@ -31,6 +32,15 @@ export default function Home() {
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
+
+	useEffect(() => {
+		const checkConnection = async () => {
+			confirmConnection().catch((err) => {
+				showBoundary(err);
+			});
+		};
+		checkConnection();
+	}, []);
 
 	const sidePanelComponents = (
 		<>
