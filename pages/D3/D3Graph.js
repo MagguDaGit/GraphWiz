@@ -105,7 +105,7 @@ const D3Graph = ({ graphData }) => {
 					.on('end', dragended)
 			)
 			.on('click', (event, data) => {
-				console.log('node clikced: ', data);
+				console.log('node clicked: ', data);
 			});
 
 		// Add circles (nodes)

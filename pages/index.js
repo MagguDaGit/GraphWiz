@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import D3Graph from './D3/D3Graph';
 import { sampleData } from './D3/sampleData';
 import { GraphContext } from '../contexts/GraphContext.js';
-import { Box, Container } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import GraphMenuButton from './menus/GraphMenuButton.js';
+import GraphSidePanel from './menus/GraphSidePanel.js';
 
 export default function Home() {
 	const [nodeSearchInput, setNodeSearchInput] = useState('');
 	const [nodeType, setNodeType] = useState('');
 	const [suggestedNodes, setSuggestedNodes] = useState([]);
 	const [focusNode, setFocusNode] = useState({});
+	const [open, setOpen] = useState(false);
+
 	const initialContext = {
 		searchInput: nodeSearchInput,
 		setSearchInput: setNodeSearchInput,
@@ -20,15 +26,33 @@ export default function Home() {
 		setFocusNode,
 	};
 
+	const toggleDrawer = (newOpen) => () => {
+		setOpen(newOpen);
+	};
+
+	const sidePanelComponents = (
+		<>
+			<GraphMenuButton toggleDrawer={toggleDrawer} />
+
+			<Drawer
+				open={open}
+				onClose={toggleDrawer(false)}
+			>
+				<GraphSidePanel toggleDrawer={toggleDrawer} />
+			</Drawer>
+		</>
+	);
+
 	return (
 		<Box
 			sx={{
-				height: '90vh', // Set height to fill entire viewport
+				height: '90vh', // Set height to fill (Almost) entire viewport
 				display: 'flex',
-				flexDirection: 'column', // Ensure children fill the height
+				flexDirection: 'column',
 			}}
 		>
 			<GraphContext.Provider value={initialContext}>
+				{sidePanelComponents}
 				<D3Graph graphData={sampleData} />
 			</GraphContext.Provider>
 		</Box>
