@@ -5,6 +5,8 @@
     "build": "next build"
   },
   "dependencies": {
+    "@azure/identity": "^4.2.0",
+    "@azure/storage-blob": "^12.18.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
@@ -12,10 +14,13 @@
     "@mui/material": "^5.15.19",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "d3": "^7.9.0",
+    "dotenv": "^16.4.5",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.13",
     "react-icons": "^5.2.1",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "uuid": "^9.0.1"
   }
 }

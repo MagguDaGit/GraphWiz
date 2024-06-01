@@ -6,7 +6,6 @@ import { GraphContext } from '../../contexts/GraphContext.js';
 import { findNode } from './graph.service';
 const D3Graph = ({ graphData }) => {
 	const { focusNode } = useContext(GraphContext);
-	console.log('Rendering data:', graphData);
 
 	const svgRef = useRef();
 	const defaultForce = -5000;
@@ -32,8 +31,6 @@ const D3Graph = ({ graphData }) => {
 		const zoomToNode = (node) => {
 			const target = node;
 			if (target) {
-				console.log('FOUND TARGET NODE');
-
 				const [x, y] = [target.x, target.y];
 				const scale = 8;
 				const translate = [width / 2 - scale * x, height / 2 - scale * y];
@@ -49,7 +46,6 @@ const D3Graph = ({ graphData }) => {
 		};
 
 		if (focusNode) {
-			console.log('should zoom in on node:', focusNode);
 			zoomToNode(focusNode);
 		}
 
@@ -104,9 +100,7 @@ const D3Graph = ({ graphData }) => {
 					.on('drag', dragged)
 					.on('end', dragended)
 			)
-			.on('click', (event, data) => {
-				console.log('node clicked: ', data);
-			});
+			.on('click', (event, data) => {});
 
 		// Add circles (nodes)
 		node

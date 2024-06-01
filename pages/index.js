@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import D3Graph from './D3/D3Graph';
+import { confirmConnection } from '../services/ConfirmConnection.js';
 import { sampleData } from './D3/sampleData';
 import { GraphContext } from '../contexts/GraphContext.js';
 
@@ -7,6 +8,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import GraphMenuButton from './menus/GraphMenuButton.js';
 import GraphSidePanel from './menus/GraphSidePanel.js';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export default function Home() {
 	const [nodeSearchInput, setNodeSearchInput] = useState('');
