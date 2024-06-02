@@ -1,8 +1,31 @@
+import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import DefaultFallback from '../common/error-ui/DefaultFallback';
-import GlobalError from './GlobalError';
+import GlobalError from '../common/error-ui/GlobalError';
+
+import Drawer from '@mui/material/Drawer';
+import GraphMenuButton from '../common/menus/GraphMenuButton.js';
+import GraphSidePanel from '../common/menus/GraphSidePanel.js';
 
 function App({ Component, pageProps }) {
+	const [open, setOpen] = useState(false);
+
+	const toggleDrawer = (newOpen) => () => {
+		setOpen(newOpen);
+	};
+
+	const sidePanelComponents = (
+		<>
+			<GraphMenuButton toggleDrawer={toggleDrawer} />
+
+			<Drawer
+				open={open}
+				onClose={toggleDrawer(false)}
+			>
+				<GraphSidePanel toggleDrawer={toggleDrawer} />
+			</Drawer>
+		</>
+	);
+
 	return (
 		<ErrorBoundary
 			fallbackRender={({ error, resetErrorBoundary }) => (
@@ -13,6 +36,7 @@ function App({ Component, pageProps }) {
 			)}
 			onReset={() => null}
 		>
+			{sidePanelComponents}
 			<Component {...pageProps} />
 		</ErrorBoundary>
 	);

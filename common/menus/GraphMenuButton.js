@@ -4,10 +4,14 @@ const GraphMenuButton = ({ toggleDrawer }) => {
 	return (
 		<Box
 			sx={{
+				position: 'fixed',
+				top: 0,
+				left: 0,
 				display: 'flex',
 				justifyContent: 'flex-start',
 				alignItems: 'center',
-				marginBottom: '16px',
+				margin: '16px',
+				zIndex: 1000,
 			}}
 		>
 			<Button onClick={toggleDrawer(true)}>
