@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactFlow, {
 	ReactFlowProvider,
 	Panel,
@@ -11,15 +11,8 @@ import NodeWithToolbar from './NodeWithToolbar';
 
 import 'reactflow/dist/style.css';
 import CreateNewNodeDialog from '../dialog/CreateNewNodeDialog';
-//TODO: Remove the inital data types when integrated fully with blob storage
-const initialNodes = [
-	{
-		id: '1',
-		position: { x: 0, y: 0 },
-		type: 'node-with-toolbar',
-		data: { label: 'Node' },
-	},
-];
+import { FlowContext } from './FlowContext';
+import { initialNodes } from './FlowContext';
 
 const nodeTypes = {
 	'node-with-toolbar': NodeWithToolbar,
@@ -28,43 +21,65 @@ const nodeTypes = {
 function Flow() {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [openCreateNodeDialog, setOpenCreateNodeDialog] = useState(false);
+
 	const addNode = (node) => {
 		const nodeList = nodes;
 		nodeList.push(node);
 		setNodes(nodeList);
 	};
 
+	const editNode = (nodeId, label) => {
+		console.log(nodeId, label);
+		const nodesCopy = nodes;
+		nodesCopy.forEach((n) => {
+			console.log('found!');
+			if (n.data.id === nodeId) n.data.label = label;
+		});
+		setNodes(nodesCopy);
+		console.log(nodesCopy);
+	};
+
+	const context = {
+		nodes,
+		setNodes,
+		addNode,
+		removeNode: () => null,
+		editNode,
+	};
+
 	return (
 		<>
-			<ReactFlowProvider>
-				<ReactFlow
-					nodes={nodes}
-					onNodesChange={onNodesChange}
-					nodeTypes={nodeTypes}
-					fitView
-					preventScrolling={false}
-				>
-					<Panel
-						style={{
-							marginTop: '10vh',
-						}}
+			<FlowContext.Provider value={context}>
+				<ReactFlowProvider>
+					<ReactFlow
+						nodes={nodes}
+						onNodesChange={onNodesChange}
+						nodeTypes={nodeTypes}
+						fitView
+						preventScrolling={false}
 					>
-						<Button
-							onClick={() => setOpenCreateNodeDialog(true)}
-							variant='contained'
+						<Panel
+							style={{
+								marginTop: '10vh',
+							}}
 						>
-							<AddIcon /> Add Node
-						</Button>
-					</Panel>
-				</ReactFlow>
-				<Controls />
-			</ReactFlowProvider>
-			<CreateNewNodeDialog
-				open={openCreateNodeDialog}
-				setOpen={setOpenCreateNodeDialog}
-				nodes={nodes}
-				addNode={addNode}
-			/>
+							<Button
+								onClick={() => setOpenCreateNodeDialog(true)}
+								variant='contained'
+							>
+								<AddIcon /> Add Node
+							</Button>
+						</Panel>
+					</ReactFlow>
+					<Controls />
+				</ReactFlowProvider>
+				<CreateNewNodeDialog
+					open={openCreateNodeDialog}
+					setOpen={setOpenCreateNodeDialog}
+					nodes={nodes}
+					addNode={addNode}
+				/>
+			</FlowContext.Provider>
 		</>
 	);
 }

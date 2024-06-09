@@ -1,6 +1,11 @@
 import { Box, Button } from '@mui/material';
 import { NodeToolbar } from 'reactflow';
+import EditNodeDialog from '../dialog/EditNodeDialog';
+import { useContext, useState } from 'react';
+import { FlowContext } from './FlowContext';
 export default function NodeWithToolbar({ data }) {
+	const { editNode } = useContext(FlowContext);
+	const [openEditDialog, setOpenEditDialog] = useState(false);
 	return (
 		<>
 			<NodeToolbar
@@ -15,6 +20,7 @@ export default function NodeWithToolbar({ data }) {
 					<Button
 						color='info'
 						variant='contained'
+						onClick={() => setOpenEditDialog(true)}
 					>
 						Edit
 					</Button>
@@ -33,6 +39,13 @@ export default function NodeWithToolbar({ data }) {
 				</Box>
 			</NodeToolbar>
 			<div className='react-flow__node-default'>{data?.label}</div>
+
+			<EditNodeDialog
+				open={openEditDialog}
+				setOpen={setOpenEditDialog}
+				editNode={editNode}
+				data={data}
+			/>
 		</>
 	);
 }
